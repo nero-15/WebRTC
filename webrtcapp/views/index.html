@@ -9,31 +9,17 @@
 	<p>WEBカメラ</p>
 	<video id="video"></video>
 	<script>
-	/*
-	let video = document.getElementById('video');
-	let localStream;
-
-	function startVideo() {
-		navigator.mediaDevices.getUserMedia({video: true, audio: false})
-		.then(function (stream) {
-			localStream = stream;
-			video.src = window.URL.createObjectURL(localStream);
-		}).catch(function (error) {
-			console.log(error)
-			return;
-		});
-	}*/
 
 	const video = document.getElementById("video")
-    navigator.mediaDevices.getUserMedia({
-        video: true,
-        audio: false,
-    }).then(stream => {
-        video.srcObject = stream;
-        video.play()
-    }).catch(e => {
-      console.log(e)
-    })
+	navigator.mediaDevices.getUserMedia({
+		video: true,
+		audio: false,
+	}).then(stream => {
+		video.srcObject = stream;
+		video.play()
+	}).catch(e => {
+	  console.log(e)
+	})
 </script>
 </body>
 </html>

@@ -6,6 +6,20 @@
 	<title>WebRTC</title>
 </head>
 <body>
-	<p>hello world</p>
+	<p>WEBカメラ</p>
+	<video id="video"></video>
+	<script>
+
+	const video = document.getElementById("video")
+	navigator.mediaDevices.getUserMedia({
+		video: true,
+		audio: false,
+	}).then(stream => {
+		video.srcObject = stream;
+		video.play()
+	}).catch(e => {
+	  console.log(e)
+	})
+</script>
 </body>
 </html>

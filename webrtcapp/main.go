@@ -6,11 +6,11 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.ParseFiles("views/index.html"))
+var templates = template.Must(template.ParseFiles("views/camera.html"))
 
 func main() {
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "index.html", nil)
+	http.HandleFunc("/camera", func(w http.ResponseWriter, r *http.Request) {
+		err := templates.ExecuteTemplate(w, "camera.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

@@ -83,6 +83,13 @@
 		console.log("Unable to create an offer: " + error.toString());
 	}
 
+	function receiveChannelCallback(event) {
+		receiveChannel = event.channel;
+		receiveChannel.onmessage = handleReceiveMessage;
+		receiveChannel.onopen = handleReceiveChannelStatusChange;
+		receiveChannel.onclose = handleReceiveChannelStatusChange;
+	}
+
 
 
 	window.addEventListener('load', startup, false);

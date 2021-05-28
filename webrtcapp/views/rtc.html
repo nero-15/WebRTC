@@ -116,6 +116,12 @@
 		}
 	}
 
+	function handleReceiveChannelStatusChange(event) {
+		if (receiveChannel) {
+			console.log("Receive channel's status has changed to " + receiveChannel.readyState);
+		}
+	}
+
 
 
 	window.addEventListener('load', startup, false);

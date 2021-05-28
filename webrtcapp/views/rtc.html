@@ -52,7 +52,7 @@
 		receiveBox = document.getElementById('receivebox');
 
 		connectButton.addEventListener('click', connectPeers, false);
-		//disconnectButton.addEventListener('click', disconnectPeers, false);
+		disconnectButton.addEventListener('click', disconnectPeers, false);
 		sendButton.addEventListener('click', sendMessage, false);
 	}
 
@@ -130,7 +130,34 @@
 		messageInputBox.focus();
 	}
 
+	function handleReceiveMessage(event) {
+		var el = document.createElement("p");
+		var txtNode = document.createTextNode(event.data);
 
+		el.appendChild(txtNode);
+		receiveBox.appendChild(el);
+	}
+
+	function disconnectPeers() {
+
+		sendChannel.close();
+		receiveChannel.close();
+
+		localConnection.close();
+		remoteConnection.close();
+
+		sendChannel = null;
+		receiveChannel = null;
+		localConnection = null;
+		remoteConnection = null;
+
+		connectButton.disabled = false;
+		disconnectButton.disabled = true;
+		sendButton.disabled = true;
+
+		messageInputBox.value = "";
+		messageInputBox.disabled = true;
+	}
 
 	window.addEventListener('load', startup, false);
  })();

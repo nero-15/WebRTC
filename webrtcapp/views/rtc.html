@@ -41,6 +41,9 @@
 	var localConnection = null;
 	var remoteConnection = null;
 
+	var sendChannel = null;
+	var receiveChannel = null;
+
 	function startup() {
 		connectButton = document.getElementById('connectButton');
 		disconnectButton = document.getElementById('disconnectButton');
@@ -83,11 +86,34 @@
 		console.log("Unable to create an offer: " + error.toString());
 	}
 
+	function handleAddCandidateError() {
+		console.log("Oh noes! addICECandidate failed!");
+	}
+
 	function receiveChannelCallback(event) {
 		receiveChannel = event.channel;
 		receiveChannel.onmessage = handleReceiveMessage;
 		receiveChannel.onopen = handleReceiveChannelStatusChange;
 		receiveChannel.onclose = handleReceiveChannelStatusChange;
+	}
+
+	function handleSendChannelStatusChange(event) {
+		if (sendChannel) {
+			var state = sendChannel.readyState;
+
+			if (state === "open") {
+				messageInputBox.disabled = false;
+				messageInputBox.focus();
+				sendButton.disabled = false;
+				disconnectButton.disabled = false;
+				connectButton.disabled = true;
+			} else {
+				messageInputBox.disabled = true;
+				sendButton.disabled = true;
+				connectButton.disabled = false;
+				disconnectButton.disabled = true;
+			}
+		}
 	}
 
 

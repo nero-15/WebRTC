@@ -53,7 +53,7 @@
 
 		connectButton.addEventListener('click', connectPeers, false);
 		//disconnectButton.addEventListener('click', disconnectPeers, false);
-		//sendButton.addEventListener('click', sendMessage, false);
+		sendButton.addEventListener('click', sendMessage, false);
 	}
 
 	function connectPeers() {
@@ -120,6 +120,14 @@
 		if (receiveChannel) {
 			console.log("Receive channel's status has changed to " + receiveChannel.readyState);
 		}
+	}
+
+	function sendMessage() {
+		var message = messageInputBox.value;
+		sendChannel.send(message);
+
+		messageInputBox.value = "";
+		messageInputBox.focus();
 	}
 
 

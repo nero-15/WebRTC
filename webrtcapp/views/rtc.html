@@ -69,6 +69,18 @@
 		remoteConnection.onicecandidate = e => !e.candidate
 			|| localConnection.addIceCandidate(e.candidate)
 			.catch(handleAddCandidateError);
+
+		localConnection.createOffer()
+			.then(offer => localConnection.setLocalDescription(offer))
+			.then(() => remoteConnection.setRemoteDescription(localConnection.localDescription))
+			.then(() => remoteConnection.createAnswer())
+			.then(answer => remoteConnection.setLocalDescription(answer))
+			.then(() => localConnection.setRemoteDescription(remoteConnection.localDescription))
+			.catch(handleCreateDescriptionError);
+	}
+
+	function handleCreateDescriptionError(error) {
+		console.log("Unable to create an offer: " + error.toString());
 	}
 
 

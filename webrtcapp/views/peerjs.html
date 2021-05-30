@@ -10,7 +10,10 @@
 	<p>peerJs</p>
 	<script>
 		var peer = new Peer();
-		console.log(peer);
+
+		peer.on('open', function(id) {
+			console.log('My peer ID is: ' + id);
+		});
 	</script>
 </body>
 </html>

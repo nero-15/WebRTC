@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.ParseFiles("views/camera.html", "views/rtc.html", "views/peerjs.html"))
+var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/camera.html", "views/rtc.html", "views/peerjs.html"))
 
 func main() {
 	http.HandleFunc("/camera", func(w http.ResponseWriter, r *http.Request) {

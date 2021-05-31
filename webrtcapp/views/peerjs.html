@@ -3,35 +3,50 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 	<title>WebRTC peerJs</title>
+	<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-	<p>peerJs</p>
-	<!-- TODO: https://peerjs.com/docs.html#start -->
-	<div>
-		My peer ID is: <span id="myPeerId"></span>
-	</div>
+	<div id="app">
+		<h1>peerJs</h1>
+		<!-- TODO: https://peerjs.com/docs.html#start -->
+		<div>
+			My peer ID is: {{ myPeerId }}
+		</div>
 
-	<div>
-		<input type="text" id="connectId">
-		<button id="connectButton">
-			Connect
-		</button>
-		<button id="disconnectButton" disabled>
-			Disconnect
-		</button>
+		<div>
+			<input type="text" id="connectId">
+			<button id="connectButton">
+				Connect
+			</button>
+			<button id="disconnectButton" disabled>
+				Disconnect
+			</button>
+		</div>
 	</div>
 
 
 
 	<script>
-		var peer = new Peer();
+	var app = new Vue({
+		el: '#app',
+		data: {
+			myPeerId: '',
+		},
+		mounted: function () {
+			var peer = new Peer();
+			peer.on('open', function(id) {
+				app.myPeerId = id;
+			});
+		},
+		methods: {
+		}
+	})
 
-		peer.on('open', function(id) {
-			var myPeerId = document.getElementById('myPeerId');
-			myPeerId.innerHTML = id;
-		});
+
+
+
 	</script>
 </body>
 </html>

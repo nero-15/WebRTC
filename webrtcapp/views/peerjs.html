@@ -16,13 +16,9 @@
 		</div>
 
 		<div>
-			<input type="text" id="connectId">
-			<button id="connectButton">
-				Connect
-			</button>
-			<button id="disconnectButton" disabled>
-				Disconnect
-			</button>
+			<input type="text" v-model="connectToPeerId">
+			<button @click="connect">Connect</button>
+			<button disabled>Disconnect</button>
 		</div>
 	</div>
 
@@ -33,6 +29,7 @@
 		el: '#app',
 		data: {
 			myPeerId: '',
+			connectToPeerId: '',
 		},
 		mounted: function () {
 			var peer = new Peer();
@@ -41,6 +38,9 @@
 			});
 		},
 		methods: {
+			connect: function(){
+				console.log(this.connectToPeerId);
+			},
 		}
 	})
 

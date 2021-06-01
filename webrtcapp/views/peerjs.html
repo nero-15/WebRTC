@@ -17,7 +17,7 @@
 
 		<div>
 			<input type="text" v-model="connectToPeerId">
-			<button @click="connect">Connect</button>
+			<button @click="connectPeer">Connect</button>
 			<button disabled>Disconnect</button>
 		</div>
 	</div>
@@ -30,16 +30,24 @@
 		data: {
 			myPeerId: '',
 			connectToPeerId: '',
+			peer: null,
+			connect: null,
 		},
 		mounted: function () {
-			var peer = new Peer();
-			peer.on('open', function(id) {
+			this.peer = new Peer();
+			this.peer.on('open', function(id) {
 				app.myPeerId = id;
+			});
+			this.peer.on('connection', function(conn) {
+				console.log(conn);
 			});
 		},
 		methods: {
-			connect: function(){
-				console.log(this.connectToPeerId);
+			connectPeer: function(){
+				this.connect = this.peer.connect(this.connectToPeerId);
+
+
+
 			},
 		}
 	})

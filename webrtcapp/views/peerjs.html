@@ -40,13 +40,20 @@
 			});
 			this.peer.on('connection', function(conn) {
 				console.log(conn);
+				conn.on('data',function(data) {
+					console.log(data['string']);
+				});
 			});
 		},
 		methods: {
 			connectPeer: function(){
-				this.connect = this.peer.connect(this.connectToPeerId);
-
-
+				var connect = this.peer.connect(this.connectToPeerId);
+				connect.on('open', function() {
+					connect.send({
+						string : 'Hello World!',
+						number : 1
+					});
+				});
 
 			},
 		}

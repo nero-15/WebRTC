@@ -20,6 +20,12 @@
 			<button @click="connectPeer">Connect</button>
 			<button disabled>Disconnect</button>
 		</div>
+		<div>
+			<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
+		</div>
+		<div>
+			<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
+		</div>
 	</div>
 
 
@@ -32,6 +38,8 @@
 			connectToPeerId: '',
 			peer: null,
 			connect: null,
+			sendMessageList: [],
+			receveMessageList: [],
 		},
 		mounted: function () {
 			this.peer = new Peer();
@@ -41,7 +49,7 @@
 			this.peer.on('connection', function(conn) {
 				console.log(conn);
 				conn.on('data',function(data) {
-					console.log(data['string']);
+					app.receveMessageList.push({body: data['string']});
 				});
 			});
 		},
@@ -49,8 +57,10 @@
 			connectPeer: function(){
 				var connect = this.peer.connect(this.connectToPeerId);
 				connect.on('open', function() {
+					var message = 'Hello World!';
+					app.sendMessageList.push({body: message});
 					connect.send({
-						string : 'Hello World!',
+						string : message,
 						number : 1
 					});
 				});

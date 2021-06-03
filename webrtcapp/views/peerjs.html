@@ -21,13 +21,15 @@
 		</div>
 		<button v-show="uiState.showDisconnectButton">Disconnect</button>
 
-		<div>
-			<h2>送信メッセージ</h2>
-			<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
-		</div>
-		<div>
-			<h2>受信メッセージ</h2>
-			<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
+		<div v-show="uiState.showMessage">
+			<div>
+				<h2>送信メッセージ</h2>
+				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
+			</div>
+			<div>
+				<h2>受信メッセージ</h2>
+				<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
+			</div>
 		</div>
 	</div>
 
@@ -38,6 +40,7 @@
 			uiState: {
 				showConnectButton: true,
 				showDisconnectButton: false,
+				showMessage: false,
 			},
 			myPeerId: '',
 			connectToPeerId: '',
@@ -54,6 +57,7 @@
 			this.peer.on('connection', function(conn) {
 				app.uiState.showConnectButton = false;
 				app.uiState.showDisconnectButton = true;
+				app.uiState.showMessage = true;
 
 				conn.on('data',function(data) {
 					app.receveMessageList.push({body: data['string']});
@@ -66,6 +70,7 @@
 				connect.on('open', function() {
 					app.uiState.showConnectButton = false;
 					app.uiState.showDisconnectButton = true;
+					app.uiState.showMessage = true;
 
 					var message = 'Hello World!';
 					app.sendMessageList.push({body: message});

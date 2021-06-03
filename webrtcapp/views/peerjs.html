@@ -21,9 +21,11 @@
 			<button disabled>Disconnect</button>
 		</div>
 		<div>
+			<h2>送信メッセージ</h2>
 			<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
 		</div>
 		<div>
+			<h2>受信メッセージ</h2>
 			<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
 		</div>
 	</div>

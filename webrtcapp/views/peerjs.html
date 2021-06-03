@@ -15,11 +15,12 @@
 			My peer ID is: {{ myPeerId }}
 		</div>
 
-		<div>
+		<div v-show="uiState.showConnectButton">
 			<input type="text" v-model="connectToPeerId">
-			<button @click="connectPeer">Connect</button>
-			<button disabled>Disconnect</button>
+			<button v-show="uiState.showConnectButton" @click="connectPeer">Connect</button>
 		</div>
+		<button v-show="uiState.showDisconnectButton">Disconnect</button>
+
 		<div>
 			<h2>送信メッセージ</h2>
 			<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
@@ -30,12 +31,14 @@
 		</div>
 	</div>
 
-
-
 	<script>
 	var app = new Vue({
 		el: '#app',
 		data: {
+			uiState: {
+				showConnectButton: true,
+				showDisconnectButton: false,
+			},
 			myPeerId: '',
 			connectToPeerId: '',
 			peer: null,
@@ -49,7 +52,9 @@
 				app.myPeerId = id;
 			});
 			this.peer.on('connection', function(conn) {
-				console.log(conn);
+				app.uiState.showConnectButton = false;
+				app.uiState.showDisconnectButton = true;
+
 				conn.on('data',function(data) {
 					app.receveMessageList.push({body: data['string']});
 				});
@@ -59,6 +64,9 @@
 			connectPeer: function(){
 				var connect = this.peer.connect(this.connectToPeerId);
 				connect.on('open', function() {
+					app.uiState.showConnectButton = false;
+					app.uiState.showDisconnectButton = true;
+
 					var message = 'Hello World!';
 					app.sendMessageList.push({body: message});
 					connect.send({

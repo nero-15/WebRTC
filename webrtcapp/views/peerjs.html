@@ -19,7 +19,7 @@
 			<input type="text" v-model="connectToPeerId">
 			<button v-show="uiState.showConnectButton" @click="connectPeer">Connect</button>
 		</div>
-		<button v-show="uiState.showDisconnectButton">Disconnect</button>
+		<button v-show="uiState.showDisconnectButton" @click="closeConnect">close</button>
 
 		<div v-show="uiState.showMessage">
 			<div>
@@ -62,7 +62,12 @@
 				conn.on('data',function(data) {
 					app.receveMessageList.push({body: data['string']});
 				});
+				conn.on('close', function() {
+					app.uiState.showConnectButton = true;
+					app.uiState.showDisconnectButton = false;
+				});
 			});
+
 		},
 		methods: {
 			connectPeer: function(){
@@ -79,7 +84,11 @@
 						number : 1
 					});
 				});
-
+			},
+			closeConnect: function(){
+				this.connect.close();
+				app.uiState.showConnectButton = true;
+				app.uiState.showDisconnectButton = false;
 			},
 		}
 	})

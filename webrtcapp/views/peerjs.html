@@ -59,13 +59,14 @@
 			this.peer.on('open', function(id) {
 				app.myPeerId = id;
 			});
-			this.peer.on('connection', function(conn) {
+			this.peer.on('connection', function(conn) {//受信側
 				app.connect = conn;
+				// 接続できたら場合のUI表示
 				app.uiState.showConnectButton = false;
 				app.uiState.showCloseConnectButton = true;
 				app.uiState.showMessage = true;
 
-				conn.on('data',function(data) {
+				conn.on('data',function(data) {//メッセージを受け取った時に受信一覧に追加
 					app.receveMessageList.push({body: data});
 				});
 				conn.on('close', function() {
@@ -78,12 +79,13 @@
 		methods: {
 			connectPeer: function(){
 				this.connect = this.peer.connect(this.connectToPeerId);
-				this.connect.on('open', function() {
+				this.connect.on('open', function() {//送信側
+					// 接続できたら場合のUI表示
 					app.uiState.showConnectButton = false;
 					app.uiState.showCloseConnectButton = true;
 					app.uiState.showMessage = true;
 
-					app.connect.on('data', function(data) {
+					app.connect.on('data', function(data) {//メッセージを受け取った時に受信一覧に追加
 						app.receveMessageList.push({body: data});
 					});
 
@@ -102,9 +104,6 @@
 			}
 		}
 	})
-
-
-
 
 	</script>
 </body>

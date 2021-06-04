@@ -19,7 +19,7 @@
 			<input type="text" v-model="connectToPeerId">
 			<button v-show="uiState.showConnectButton" @click="connectPeer">Connect</button>
 		</div>
-		<button v-show="uiState.showDisconnectButton" @click="closeConnect">close</button>
+		<button v-show="uiState.showCloseConnectButton" @click="closeConnect">close</button>
 
 		<div v-show="uiState.showMessage">
 			<div>
@@ -39,7 +39,7 @@
 		data: {
 			uiState: {
 				showConnectButton: true,
-				showDisconnectButton: false,
+				showCloseConnectButton: false,
 				showMessage: false,
 			},
 			myPeerId: '',
@@ -56,7 +56,7 @@
 			});
 			this.peer.on('connection', function(conn) {
 				app.uiState.showConnectButton = false;
-				app.uiState.showDisconnectButton = true;
+				app.uiState.showCloseConnectButton = true;
 				app.uiState.showMessage = true;
 
 				conn.on('data',function(data) {
@@ -64,7 +64,7 @@
 				});
 				conn.on('close', function() {
 					app.uiState.showConnectButton = true;
-					app.uiState.showDisconnectButton = false;
+					app.uiState.showCloseConnectButton = false;
 				});
 			});
 
@@ -74,7 +74,7 @@
 				this.connect = this.peer.connect(this.connectToPeerId);
 				this.connect.on('open', function() {
 					app.uiState.showConnectButton = false;
-					app.uiState.showDisconnectButton = true;
+					app.uiState.showCloseConnectButton = true;
 					app.uiState.showMessage = true;
 
 					var message = 'Hello World!';
@@ -88,7 +88,7 @@
 			closeConnect: function(){
 				this.connect.close();
 				app.uiState.showConnectButton = true;
-				app.uiState.showDisconnectButton = false;
+				app.uiState.showCloseConnectButton = false;
 			},
 		}
 	})

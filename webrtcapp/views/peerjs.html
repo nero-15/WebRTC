@@ -87,8 +87,9 @@
 			},
 			closeConnect: function(){
 				this.connect.close();
-				app.uiState.showConnectButton = true;
-				app.uiState.showCloseConnectButton = false;
+				this.uiState.showConnectButton = true;
+				this.uiState.showCloseConnectButton = false;
+				this.connectToPeerId = '';
 			},
 		}
 	})

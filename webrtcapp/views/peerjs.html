@@ -19,9 +19,13 @@
 			<input type="text" v-model="connectToPeerId">
 			<button v-show="uiState.showConnectButton" @click="connectPeer">Connect</button>
 		</div>
-		<button v-show="uiState.showDisconnectButton">Disconnect</button>
+		<button v-show="uiState.showCloseConnectButton" @click="closeConnect">close</button>
 
 		<div v-show="uiState.showMessage">
+			<div>
+				<input type="text" v-model="sendMessage">
+				<button @click="sendMessageToPeer">send</button>
+			</div>
 			<div>
 				<h2>送信メッセージ</h2>
 				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
@@ -39,7 +43,7 @@
 		data: {
 			uiState: {
 				showConnectButton: true,
-				showDisconnectButton: false,
+				showCloseConnectButton: false,
 				showMessage: false,
 			},
 			myPeerId: '',
@@ -48,44 +52,58 @@
 			connect: null,
 			sendMessageList: [],
 			receveMessageList: [],
+			sendMessage: '',
 		},
 		mounted: function () {
 			this.peer = new Peer();
 			this.peer.on('open', function(id) {
 				app.myPeerId = id;
 			});
-			this.peer.on('connection', function(conn) {
+			this.peer.on('connection', function(conn) {//受信側
+				app.connect = conn;
+				// 接続できたら場合のUI表示
 				app.uiState.showConnectButton = false;
-				app.uiState.showDisconnectButton = true;
+				app.uiState.showCloseConnectButton = true;
 				app.uiState.showMessage = true;
 
-				conn.on('data',function(data) {
-					app.receveMessageList.push({body: data['string']});
+				conn.on('data',function(data) {//メッセージを受け取った時に受信一覧に追加
+					app.receveMessageList.push({body: data});
+				});
+				conn.on('close', function() {
+					app.uiState.showConnectButton = true;
+					app.uiState.showCloseConnectButton = false;
 				});
 			});
+
 		},
 		methods: {
 			connectPeer: function(){
-				var connect = this.peer.connect(this.connectToPeerId);
-				connect.on('open', function() {
+				this.connect = this.peer.connect(this.connectToPeerId);
+				this.connect.on('open', function() {//送信側
+					// 接続できたら場合のUI表示
 					app.uiState.showConnectButton = false;
-					app.uiState.showDisconnectButton = true;
+					app.uiState.showCloseConnectButton = true;
 					app.uiState.showMessage = true;
 
-					var message = 'Hello World!';
-					app.sendMessageList.push({body: message});
-					connect.send({
-						string : message,
-						number : 1
+					app.connect.on('data', function(data) {//メッセージを受け取った時に受信一覧に追加
+						app.receveMessageList.push({body: data});
 					});
-				});
 
+				});
 			},
+			closeConnect: function(){
+				this.connect.close();
+				this.uiState.showConnectButton = true;
+				this.uiState.showCloseConnectButton = false;
+				this.connectToPeerId = '';
+			},
+			sendMessageToPeer: function(){
+				this.sendMessageList.push({body: this.sendMessage});
+				this.connect.send(this.sendMessage);
+				this.sendMessage = '';
+			}
 		}
 	})
-
-
-
 
 	</script>
 </body>

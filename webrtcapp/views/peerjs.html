@@ -60,12 +60,13 @@
 				app.myPeerId = id;
 			});
 			this.peer.on('connection', function(conn) {
+				app.connect = conn;
 				app.uiState.showConnectButton = false;
 				app.uiState.showCloseConnectButton = true;
 				app.uiState.showMessage = true;
 
 				conn.on('data',function(data) {
-					app.receveMessageList.push({body: data['string']});
+					app.receveMessageList.push({body: data});
 				});
 				conn.on('close', function() {
 					app.uiState.showConnectButton = true;
@@ -81,6 +82,10 @@
 					app.uiState.showConnectButton = false;
 					app.uiState.showCloseConnectButton = true;
 					app.uiState.showMessage = true;
+
+					app.connect.on('data', function(data) {
+						app.receveMessageList.push({body: data});
+					});
 
 					var message = 'Hello World!';
 					app.sendMessageList.push({body: message});

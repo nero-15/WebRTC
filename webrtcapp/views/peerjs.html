@@ -23,6 +23,10 @@
 
 		<div v-show="uiState.showMessage">
 			<div>
+				<input type="text" v-model="sendMessage">
+				<button @click="sendMessageToPeer">send</button>
+			</div>
+			<div>
 				<h2>送信メッセージ</h2>
 				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
 			</div>
@@ -48,6 +52,7 @@
 			connect: null,
 			sendMessageList: [],
 			receveMessageList: [],
+			sendMessage: '',
 		},
 		mounted: function () {
 			this.peer = new Peer();
@@ -79,10 +84,7 @@
 
 					var message = 'Hello World!';
 					app.sendMessageList.push({body: message});
-					app.connect.send({
-						string : message,
-						number : 1
-					});
+					app.connect.send(message);
 				});
 			},
 			closeConnect: function(){
@@ -91,6 +93,11 @@
 				this.uiState.showCloseConnectButton = false;
 				this.connectToPeerId = '';
 			},
+			sendMessageToPeer: function(){
+				this.sendMessageList.push({body: this.sendMessage});
+				this.connect.send(this.sendMessage);
+				this.sendMessage = '';
+			}
 		}
 	})
 

@@ -17,8 +17,14 @@
 			<input type="text" v-model="connectToPeerId">
 			<button @click="callPeer">call</button>
 		</div>
-		<video id="myVideo"></video>
-		<video id="otherVideo"></video>
+		<div>
+			<p>my video</p>
+			<video id="myVideo"></video>
+		</div>
+		<div>
+			<p>other video</p>
+			<video id="otherVideo"></video>
+		</div>
 	</div>
 	<script>
 		var app = new Vue({

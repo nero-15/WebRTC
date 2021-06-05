@@ -17,6 +17,7 @@
 			<input type="text" v-model="connectToPeerId">
 			<button @click="callPeer">call</button>
 		</div>
+		<button v-show="uiState.showCloseCallButton" @click="closeCall">close</button>
 		<div v-show="uiState.showMyVideo">
 			<h2>my video</h2>
 			<video id="myVideo"></video>
@@ -34,6 +35,7 @@
 					showConnectForm: true,
 					showMyVideo: false,
 					showOtherVideo: false,
+					showCloseCallButton: false
 				},
 				myPeerId: '',
 				connectToPeerId: '',
@@ -70,10 +72,19 @@
 							app.otherVideo.srcObject = remoteStream;
 							app.otherVideo.play();
 							app.uiState.showOtherVideo = true;
+							app.uiState.showConnectForm = false;
+							app.uiState.showCloseCallButton = true;
 						});
 					}).catch(e => {
 						console.log(e)
 					})
+
+					call.on('close', function() {
+						app.otherVideo = null;
+						app.uiState.showOtherVideo = false;
+						app.uiState.showConnectForm = true;
+						app.uiState.showCloseCallButton = false;
+					});
 				});
 			},
 			methods: {
@@ -84,7 +95,16 @@
 						app.otherVideo.srcObject = remoteStream;
 						app.otherVideo.play();
 						app.uiState.showOtherVideo = true;
+						app.uiState.showConnectForm = false;
+						app.uiState.showCloseCallButton = true;
 					});
+				},
+				closeCall: function(){
+					this.call.close();
+					this.otherVideo = null;
+					this.uiState.showOtherVideo = false;
+					this.uiState.showConnectForm = true;
+					this.uiState.showCloseCallButton = false;
 				},
 			}
 		})

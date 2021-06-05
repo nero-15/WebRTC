@@ -17,6 +17,7 @@
 			<input type="text" v-model="connectToPeerId">
 			<button @click="connectPeer">Connect</button>
 		</div>
+		<video id="myVideo"></video>
 	</div>
 	<script>
 		var app = new Vue({
@@ -29,8 +30,20 @@
 				connectToPeerId: '',
 				peer: null,
 				connect: null,
+				myVideo: null,
 			},
 			mounted: function () {
+				this.myVideo = document.getElementById("myVideo");
+				navigator.mediaDevices.getUserMedia({
+					video: true,
+					audio: false,
+				}).then(stream => {
+					app.myVideo.srcObject = stream;
+					app.myVideo.play();
+				}).catch(e => {
+					console.log(e)
+				})
+
 				this.peer = new Peer();
 				this.peer.on('open', function(id) {
 					app.myPeerId = id;

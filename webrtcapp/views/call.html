@@ -13,13 +13,22 @@
 		<div>
 			My peer ID is: {{ myPeerId }}
 		</div>
+		<div v-show="uiState.showConnectForm">
+			<input type="text" v-model="connectToPeerId">
+			<button @click="connectPeer">Connect</button>
+		</div>
 	</div>
 	<script>
 		var app = new Vue({
 			el: '#app',
 			data: {
+				uiState: {
+					showConnectForm: true,
+				},
 				myPeerId: '',
+				connectToPeerId: '',
 				peer: null,
+				connect: null,
 			},
 			mounted: function () {
 				this.peer = new Peer();
@@ -28,6 +37,12 @@
 				});
 			},
 			methods: {
+				connectPeer: function(){
+					this.connect = this.peer.connect(this.connectToPeerId);
+					this.connect.on('open', function() {//送信側
+						console.log('connect');
+					});
+				},
 			}
 		})
 	</script>

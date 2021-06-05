@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>WebRTC peerJs MediaConnection</title>
+	<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+	<div id="app">
+		<h1>peerJs MediaConnection</h1>
+		<div>
+			My peer ID is: {{ myPeerId }}
+		</div>
+		<div v-show="uiState.showConnectForm">
+			<input type="text" v-model="connectToPeerId">
+			<button @click="callPeer">call</button>
+		</div>
+		<button v-show="uiState.showCloseCallButton" @click="closeCall">close</button>
+		<div v-show="uiState.showMyVideo">
+			<h2>my video</h2>
+			<video id="myVideo"></video>
+		</div>
+		<div v-show="uiState.showOtherVideo">
+			<h2>other video</h2>
+			<video id="otherVideo"></video>
+		</div>
+	</div>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				uiState: {
+					showConnectForm: true,
+					showMyVideo: false,
+					showOtherVideo: false,
+					showCloseCallButton: false
+				},
+				myPeerId: '',
+				connectToPeerId: '',
+				peer: null,
+				call: null,
+				myVideo: null,
+				otherVideo: null,
+			},
+			mounted: function () {
+				this.myVideo = document.getElementById("myVideo");
+				navigator.mediaDevices.getUserMedia({
+					video: true,
+					audio: false,
+				}).then(stream => {
+					app.myVideo.srcObject = stream;
+					app.myVideo.play();
+					app.uiState.showMyVideo = true;
+				}).catch(e => {
+					console.log(e)
+				})
+
+				this.peer = new Peer();
+				this.peer.on('open', function(id) {
+					app.myPeerId = id;
+				});
+				this.peer.on('call', (call) => {
+					app.otherVideo = document.getElementById("otherVideo");
+					navigator.mediaDevices.getUserMedia({
+						video: true,
+						audio: false,
+					}).then(stream => {
+						call.answer(stream);
+						call.on('stream', (remoteStream) => {
+							app.otherVideo.srcObject = remoteStream;
+							app.otherVideo.play();
+							app.uiState.showOtherVideo = true;
+							app.uiState.showConnectForm = false;
+							app.uiState.showCloseCallButton = true;
+						});
+					}).catch(e => {
+						console.log(e)
+					})
+
+					call.on('close', function() {
+						app.otherVideo = null;
+						app.uiState.showOtherVideo = false;
+						app.uiState.showConnectForm = true;
+						app.uiState.showCloseCallButton = false;
+					});
+				});
+			},
+			methods: {
+				callPeer: function(){
+					this.call = this.peer.call(this.connectToPeerId, this.myVideo.srcObject);
+					this.call.on('stream', (remoteStream) => {
+						app.otherVideo = document.getElementById("otherVideo");
+						app.otherVideo.srcObject = remoteStream;
+						app.otherVideo.play();
+						app.uiState.showOtherVideo = true;
+						app.uiState.showConnectForm = false;
+						app.uiState.showCloseCallButton = true;
+					});
+				},
+				closeCall: function(){
+					this.call.close();
+					this.otherVideo = null;
+					this.uiState.showOtherVideo = false;
+					this.uiState.showConnectForm = true;
+					this.uiState.showCloseCallButton = false;
+				},
+			}
+		})
+	</script>
+</body>
+</html>

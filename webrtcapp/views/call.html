@@ -17,12 +17,12 @@
 			<input type="text" v-model="connectToPeerId">
 			<button @click="callPeer">call</button>
 		</div>
-		<div v-show="showMyVideo">
-			<p>my video</p>
+		<div v-show="uiState.showMyVideo">
+			<h3>my video</h3>
 			<video id="myVideo"></video>
 		</div>
-		<div v-show="showOtherVideo">
-			<p>other video</p>
+		<div v-show="uiState.showOtherVideo">
+			<h3>other video</h3>
 			<video id="otherVideo"></video>
 		</div>
 	</div>
@@ -50,7 +50,7 @@
 				}).then(stream => {
 					app.myVideo.srcObject = stream;
 					app.myVideo.play();
-					app.showMyVideo = true;
+					app.uiState.showMyVideo = true;
 				}).catch(e => {
 					console.log(e)
 				})
@@ -69,7 +69,7 @@
 						call.on('stream', (remoteStream) => {
 							app.otherVideo.srcObject = remoteStream;
 							app.otherVideo.play();
-							app.showOtherVideo = true;
+							app.uiState.showOtherVideo = true;
 						});
 					}).catch(e => {
 						console.log(e)
@@ -83,7 +83,7 @@
 						app.otherVideo = document.getElementById("otherVideo");
 						app.otherVideo.srcObject = remoteStream;
 						app.otherVideo.play();
-						app.showOtherVideo = true;
+						app.uiState.showOtherVideo = true;
 					});
 				},
 			}

@@ -35,6 +35,10 @@
 				this.peer.on('open', function(id) {
 					app.myPeerId = id;
 				});
+				this.peer.on('connection', function(conn) {//受信側
+					app.connect = conn;
+					console.log(conn);
+				});
 			},
 			methods: {
 				connectPeer: function(){

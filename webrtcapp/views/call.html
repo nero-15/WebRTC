@@ -15,9 +15,10 @@
 		</div>
 		<div v-show="uiState.showConnectForm">
 			<input type="text" v-model="connectToPeerId">
-			<button @click="connectPeer">Connect</button>
+			<button @click="callPeer">call</button>
 		</div>
 		<video id="myVideo"></video>
+		<video id="otherVideo"></video>
 	</div>
 	<script>
 		var app = new Vue({
@@ -29,8 +30,9 @@
 				myPeerId: '',
 				connectToPeerId: '',
 				peer: null,
-				connect: null,
+				call: null,
 				myVideo: null,
+				otherVideo: null,
 			},
 			mounted: function () {
 				this.myVideo = document.getElementById("myVideo");
@@ -48,16 +50,28 @@
 				this.peer.on('open', function(id) {
 					app.myPeerId = id;
 				});
-				this.peer.on('connection', function(conn) {//受信側
-					app.connect = conn;
-					console.log(conn);
+				this.peer.on('call', (call) => {
+					app.otherVideo = document.getElementById("otherVideo");
+					navigator.mediaDevices.getUserMedia({
+						video: true,
+						audio: false,
+					}).then(stream => {
+						call.answer(stream);
+						call.on('stream', (remoteStream) => {
+							console.log('受信');
+							console.log(remoteStream);
+						});
+					}).catch(e => {
+						console.log(e)
+					})
 				});
 			},
 			methods: {
-				connectPeer: function(){
-					this.connect = this.peer.connect(this.connectToPeerId);
-					this.connect.on('open', function() {//送信側
-						console.log('connect');
+				callPeer: function(){
+					this.call = this.peer.call(this.connectToPeerId, this.myVideo.srcObject);
+					this.call.on('stream', (remoteStream) => {
+						console.log('送信');
+						console.log(remoteStream);
 					});
 				},
 			}

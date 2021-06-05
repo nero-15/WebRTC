@@ -58,8 +58,8 @@
 					}).then(stream => {
 						call.answer(stream);
 						call.on('stream', (remoteStream) => {
-							console.log('受信');
-							console.log(remoteStream);
+							app.otherVideo.srcObject = remoteStream;
+							app.otherVideo.play();
 						});
 					}).catch(e => {
 						console.log(e)
@@ -70,8 +70,9 @@
 				callPeer: function(){
 					this.call = this.peer.call(this.connectToPeerId, this.myVideo.srcObject);
 					this.call.on('stream', (remoteStream) => {
-						console.log('送信');
-						console.log(remoteStream);
+						app.otherVideo = document.getElementById("otherVideo");
+						app.otherVideo.srcObject = remoteStream;
+						app.otherVideo.play();
 					});
 				},
 			}

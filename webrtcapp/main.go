@@ -9,7 +9,10 @@ import (
 var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/camera.html", "views/rtc.html", "views/peerjs.html", "views/call.html"))
 
 func main() {
-	http.HandleFunc("/camera", func(w http.ResponseWriter, r *http.Request) {
+
+	// WebRTCで静止画を撮る。以下のチュートリアルを参考に実装。
+	//https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
+	http.HandleFunc("/take_photo_with_WebRTC", func(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "camera.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -22,7 +25,7 @@ func main() {
 		}
 	})
 	http.HandleFunc("/peerjs", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "peerjs.html", nil)
+		err := templates.ExecuteTemplae(w, "peerjs.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

@@ -18,7 +18,10 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
-	http.HandleFunc("/rtc", func(w http.ResponseWriter, r *http.Request) {
+
+	//  WebRTC API の RTCDataChannel を使ったサンプル。以下のチュートリアルを参考に実装。
+	// https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample
+	http.HandleFunc("/RTCDataChannel_sample", func(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "rtc.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

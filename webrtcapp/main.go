@@ -28,7 +28,7 @@ func main() {
 		}
 	})
 	http.HandleFunc("/peerjs", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplae(w, "peerjs.html", nil)
+		err := templates.ExecuteTemplate(w, "peerjs.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

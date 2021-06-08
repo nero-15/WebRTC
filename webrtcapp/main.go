@@ -27,7 +27,9 @@ func main() {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
-	http.HandleFunc("/peerjs", func(w http.ResponseWriter, r *http.Request) {
+
+	// peerjs の DataConnection を使用してチャットを行う
+	http.HandleFunc("/chat_for_peerjs", func(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "peerjs.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

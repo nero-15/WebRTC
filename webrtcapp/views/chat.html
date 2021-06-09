@@ -60,7 +60,9 @@
 						<div class="mb-3">
 							<textarea id="sendMessage" class="form-control" rows="3" v-model="sendMessage" placeholder="message"></textarea>
 						</div>
-						<button type="button" class="btn btn-primary" @click="sendMessageToPeer">send</button>
+						<div class="row align-self-center">
+							<button type="button" class="btn btn-primary col-md-8 offset-md-2" @click="sendMessageToPeer">send</button>
+						</div>
 					</form>
 					<button v-show="uiState.showCloseConnectButton" type="button" class="btn btn-default" @click="closeConnect">close</button>
 				</div>

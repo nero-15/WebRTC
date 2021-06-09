@@ -56,6 +56,12 @@
 							</div>
 						</div>
 					</form>
+					<form v-show="uiState.showMessage">
+						<div class="mb-3">
+							<textarea id="sendMessage" class="form-control" rows="3" v-model="sendMessage" placeholder="message"></textarea>
+						</div>
+						<button type="button" class="btn btn-primary" @click="sendMessageToPeer">send</button>
+					</form>
 					<button v-show="uiState.showCloseConnectButton" type="button" class="btn btn-default" @click="closeConnect">close</button>
 				</div>
 			</div>
@@ -63,10 +69,6 @@
 
 		<!-- TODO: 以下の調整 -->
 		<div v-show="uiState.showMessage">
-			<div>
-				<input type="text" v-model="sendMessage">
-				<button @click="sendMessageToPeer">send</button>
-			</div>
 			<div>
 				<h2>送信メッセージ</h2>
 				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>

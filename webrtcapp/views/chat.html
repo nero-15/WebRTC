@@ -39,9 +39,17 @@
 	<main class="container" id="app">
 		<section class="py-5 text-center container">
 			<div class="row py-lg-5">
-				<div class="col-lg-6 col-md-8 mx-auto">
+				<div class="col-lg-6 col-md-12 mx-auto">
 					<h1 class="fw-light">chat for peerjs</h1>
 					<p class="lead">My peer ID is: {{ myPeerId }}</p>
+					<div v-show="uiState.showMessage" class="row">
+						<div class="col-md-10">
+							<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
+						</div>
+						<div class="col-md-2">
+							<button type="button" class="btn btn-default" @click="closeConnect">close</button>
+						</div>
+					</div>
 
 					<form v-show="uiState.showConnectButton">
 						<div class="mb-3">
@@ -60,11 +68,10 @@
 						<div class="mb-3">
 							<textarea id="sendMessage" class="form-control" rows="3" v-model="sendMessage" placeholder="message"></textarea>
 						</div>
-						<div class="row align-self-center">
+						<div class="row">
 							<button type="button" class="btn btn-primary col-md-8 offset-md-2" @click="sendMessageToPeer">send</button>
 						</div>
 					</form>
-					<button v-show="uiState.showCloseConnectButton" type="button" class="btn btn-default" @click="closeConnect">close</button>
 				</div>
 			</div>
 		</section>

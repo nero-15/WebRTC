@@ -143,6 +143,7 @@
 			closeConnect: function(){
 				this.connect.close();
 				this.uiState.showConnectForm = true;
+				this.uiState.connected = false;
 				this.connectToPeerId = '';
 			},
 			sendMessageToPeer: function(){

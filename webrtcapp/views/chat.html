@@ -51,7 +51,7 @@
 						</div>
 					</div>
 
-					<form v-show="uiState.showConnectButton">
+					<form v-show="uiState.showConnectForm">
 						<div class="mb-3">
 							<div class="input-group">
 								<div class="input-group-text">connect peer ID is: </div>
@@ -95,7 +95,7 @@
 		el: '#app',
 		data: {
 			uiState: {
-				showConnectButton: true,
+				showConnectForm: true,
 				showMessage: false,
 			},
 			myPeerId: '',
@@ -114,14 +114,14 @@
 			this.peer.on('connection', function(conn) {//受信側
 				app.connect = conn;
 				// 接続できたら場合のUI表示
-				app.uiState.showConnectButton = false;
+				app.uiState.showConnectForm = false;
 				app.uiState.showMessage = true;
 
 				conn.on('data',function(data) {//メッセージを受け取った時に受信一覧に追加
 					app.receveMessageList.push({body: data});
 				});
 				conn.on('close', function() {
-					app.uiState.showConnectButton = true;
+					app.uiState.showConnectForm = true;
 				});
 			});
 
@@ -131,7 +131,7 @@
 				this.connect = this.peer.connect(this.connectToPeerId);
 				this.connect.on('open', function() {//送信側
 					// 接続できたら場合のUI表示
-					app.uiState.showConnectButton = false;
+					app.uiState.showConnectForm = false;
 					app.uiState.showMessage = true;
 
 					app.connect.on('data', function(data) {//メッセージを受け取った時に受信一覧に追加
@@ -142,7 +142,7 @@
 			},
 			closeConnect: function(){
 				this.connect.close();
-				this.uiState.showConnectButton = true;
+				this.uiState.showConnectForm = true;
 				this.connectToPeerId = '';
 			},
 			sendMessageToPeer: function(){

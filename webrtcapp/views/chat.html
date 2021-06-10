@@ -42,7 +42,7 @@
 				<div class="col-lg-6 col-md-12 mx-auto">
 					<h1 class="fw-light">chat for peerjs</h1>
 					<p class="lead">My peer ID is: {{ myPeerId }}</p>
-					<div v-show="uiState.showMessage" class="row">
+					<div v-show="uiState.connected" class="row">
 						<div class="col-md-10">
 							<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
 						</div>
@@ -51,7 +51,7 @@
 						</div>
 					</div>
 
-					<form v-show="uiState.showConnectButton">
+					<form v-show="uiState.showConnectForm">
 						<div class="mb-3">
 							<div class="input-group">
 								<div class="input-group-text">connect peer ID is: </div>
@@ -64,7 +64,7 @@
 							</div>
 						</div>
 					</form>
-					<form v-show="uiState.showMessage">
+					<form v-show="uiState.connected">
 						<div class="mb-3">
 							<textarea id="sendMessage" class="form-control" rows="3" v-model="sendMessage" placeholder="message"></textarea>
 						</div>
@@ -77,7 +77,7 @@
 		</section>
 
 		<!-- TODO: 以下の調整 -->
-		<div v-show="uiState.showMessage">
+		<div v-show="uiState.connected">
 			<div>
 				<h2>送信メッセージ</h2>
 				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
@@ -95,9 +95,8 @@
 		el: '#app',
 		data: {
 			uiState: {
-				showConnectButton: true,
-				showCloseConnectButton: false,
-				showMessage: false,
+				showConnectForm: true,
+				connected: false,
 			},
 			myPeerId: '',
 			connectToPeerId: '',
@@ -115,16 +114,14 @@
 			this.peer.on('connection', function(conn) {//受信側
 				app.connect = conn;
 				// 接続できたら場合のUI表示
-				app.uiState.showConnectButton = false;
-				app.uiState.showCloseConnectButton = true;
-				app.uiState.showMessage = true;
+				app.uiState.showConnectForm = false;
+				app.uiState.connected = true;
 
 				conn.on('data',function(data) {//メッセージを受け取った時に受信一覧に追加
 					app.receveMessageList.push({body: data});
 				});
 				conn.on('close', function() {
-					app.uiState.showConnectButton = true;
-					app.uiState.showCloseConnectButton = false;
+					app.uiState.showConnectForm = true;
 				});
 			});
 
@@ -134,9 +131,8 @@
 				this.connect = this.peer.connect(this.connectToPeerId);
 				this.connect.on('open', function() {//送信側
 					// 接続できたら場合のUI表示
-					app.uiState.showConnectButton = false;
-					app.uiState.showCloseConnectButton = true;
-					app.uiState.showMessage = true;
+					app.uiState.showConnectForm = false;
+					app.uiState.connected = true;
 
 					app.connect.on('data', function(data) {//メッセージを受け取った時に受信一覧に追加
 						app.receveMessageList.push({body: data});
@@ -146,8 +142,8 @@
 			},
 			closeConnect: function(){
 				this.connect.close();
-				this.uiState.showConnectButton = true;
-				this.uiState.showCloseConnectButton = false;
+				this.uiState.showConnectForm = true;
+				this.uiState.connected = false;
 				this.connectToPeerId = '';
 			},
 			sendMessageToPeer: function(){

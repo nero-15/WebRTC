@@ -123,6 +123,7 @@
 			});
 			this.peer.on('connection', function(conn) {//受信側
 				app.connect = conn;
+				app.connectToPeerId = conn.peer;
 				// 接続できたら場合のUI表示
 				app.uiState.showConnectForm = false;
 				app.uiState.connected = true;

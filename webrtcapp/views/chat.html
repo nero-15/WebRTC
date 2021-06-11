@@ -159,6 +159,7 @@
 				this.connectToPeerId = '';
 			},
 			sendMessageToPeer: function(){
+				if (this.sendMessage.length == 0) { alert('empty message !!'); return;}
 				this.sendMessageList.push({body: this.sendMessage});
 				this.connect.send(this.sendMessage);
 				this.sendMessage = '';

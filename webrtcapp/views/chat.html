@@ -37,7 +37,7 @@
 	</nav>
 
 	<main class="container" id="app">
-		<section class="py-5 text-center container">
+		<section class="my-2 text-center container">
 			<div class="row py-lg-5">
 				<div class="col-lg-6 col-md-12 mx-auto">
 					<h1 class="fw-light">chat for peerjs</h1>
@@ -76,17 +76,19 @@
 			</div>
 		</section>
 
-		<!-- TODO: 以下の調整 -->
-		<div v-show="uiState.connected">
-			<div>
-				<h2>送信メッセージ</h2>
-				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
+		<section v-show="uiState.connected" class="my-2 container">
+			<div class="row">
+				<div class="col-md-6">
+					<h2>送信メッセージ</h2>
+					<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
+				</div>
+				<div class="col-md-6">
+					<h2>受信メッセージ</h2>
+					<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
+				</div>
 			</div>
-			<div>
-				<h2>受信メッセージ</h2>
-				<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
-			</div>
-		</div>
+		</section>
+
 	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>

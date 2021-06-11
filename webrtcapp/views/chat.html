@@ -43,12 +43,7 @@
 					<h1 class="fw-light">chat for peerjs</h1>
 					<p class="lead">My peer ID is: {{ myPeerId }}</p>
 					<div v-show="uiState.connected" class="row">
-						<div class="col-md-10">
-							<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-default" @click="closeConnect">close</button>
-						</div>
+						<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
 					</div>
 
 					<form v-show="uiState.showConnectForm">
@@ -69,7 +64,8 @@
 							<textarea id="sendMessage" class="form-control" rows="3" v-model="sendMessage" placeholder="message"></textarea>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-primary col-md-8 offset-md-2" @click="sendMessageToPeer">send</button>
+							<button type="button" class="btn btn-primary col-md-10" @click="sendMessageToPeer">send</button>
+							<button type="button" class="btn btn-default col-md-2" @click="closeConnect">close</button>
 						</div>
 					</form>
 				</div>

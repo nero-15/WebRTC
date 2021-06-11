@@ -76,14 +76,14 @@
 			</div>
 		</section>
 
-		<section v-show="uiState.connected" class="my-2 container">
+		<section v-show="uiState.connected" class="my-2 text-center container">
 			<div class="row">
 				<div class="col-md-6">
-					<h2>送信メッセージ</h2>
+					<span class="h3 fw-light">send messages</span>
 					<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
 				</div>
 				<div class="col-md-6">
-					<h2>受信メッセージ</h2>
+					<span class="h3 fw-light">receve messages</span>
 					<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
 				</div>
 			</div>

@@ -72,25 +72,25 @@
 			</div>
 		</section>
 
-		<section v-show="uiState.connected" class="my-2 text-center container">
+		<section v-show="uiState.connected" class="my-2 text-center fw-light container">
 			<div class="row">
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
-							<p class="fs-2 fw-light">send messages</p>
+							send messages
 						</div>
-						<ul class="list-group list-group-flush">
-							<li v-for="(sendMessage, index) in sendMessageList" class="list-group-item"><p class="my-1 fs-4 fw-light text-start">{{index}} : {{ sendMessage.body }}</p></li>
+						<ul class="list-group list-group-flush text-start">
+							<li v-for="(sendMessage, index) in sendMessageList" class="list-group-item">{{index}} : {{ sendMessage.body }}</li>
 						</ul>
 					</div>
 				</div>
 				<div class="col-md-6">
 					<div class="card">
 						<div class="card-header">
-							<p class="fs-2 fw-light">receve messages</p>
+							receve messages
 						</div>
-						<ul class="list-group list-group-flush">
-							<li v-for="(receveMessage, index) in receveMessageList" class="list-group-item"><p class="my-1 fs-4 fw-light text-start">{{index}} : {{ receveMessage.body }}</p></li>
+						<ul class="list-group list-group-flush text-start">
+							<li v-for="(receveMessage, index) in receveMessageList" class="list-group-item">{{index}} : {{ receveMessage.body }}</li>
 						</ul>
 					</div>
 				</div>

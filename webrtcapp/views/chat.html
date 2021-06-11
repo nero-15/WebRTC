@@ -37,18 +37,13 @@
 	</nav>
 
 	<main class="container" id="app">
-		<section class="py-5 text-center container">
+		<section class="my-2 text-center container">
 			<div class="row py-lg-5">
 				<div class="col-lg-6 col-md-12 mx-auto">
 					<h1 class="fw-light">chat for peerjs</h1>
 					<p class="lead">My peer ID is: {{ myPeerId }}</p>
 					<div v-show="uiState.connected" class="row">
-						<div class="col-md-10">
-							<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
-						</div>
-						<div class="col-md-2">
-							<button type="button" class="btn btn-default" @click="closeConnect">close</button>
-						</div>
+						<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
 					</div>
 
 					<form v-show="uiState.showConnectForm">
@@ -69,24 +64,39 @@
 							<textarea id="sendMessage" class="form-control" rows="3" v-model="sendMessage" placeholder="message"></textarea>
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-primary col-md-8 offset-md-2" @click="sendMessageToPeer">send</button>
+							<button type="button" class="btn btn-primary col-md-10" @click="sendMessageToPeer">send</button>
+							<button type="button" class="btn btn-light col-md-2" @click="closeConnect">close</button>
 						</div>
 					</form>
 				</div>
 			</div>
 		</section>
 
-		<!-- TODO: 以下の調整 -->
-		<div v-show="uiState.connected">
-			<div>
-				<h2>送信メッセージ</h2>
-				<p v-for="sendMessage in sendMessageList">{{ sendMessage.body }}</p>
+		<section v-show="uiState.connected" class="my-2 text-center fw-light container">
+			<div class="row">
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							send messages
+						</div>
+						<ul class="list-group list-group-flush text-start">
+							<li v-for="(sendMessage, index) in sendMessageList" class="list-group-item">{{index}} : {{ sendMessage.body }}</li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div class="card">
+						<div class="card-header">
+							receve messages
+						</div>
+						<ul class="list-group list-group-flush text-start">
+							<li v-for="(receveMessage, index) in receveMessageList" class="list-group-item">{{index}} : {{ receveMessage.body }}</li>
+						</ul>
+					</div>
+				</div>
 			</div>
-			<div>
-				<h2>受信メッセージ</h2>
-				<p v-for="receveMessage in receveMessageList">{{ receveMessage.body }}</p>
-			</div>
-		</div>
+		</section>
+
 	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -113,6 +123,7 @@
 			});
 			this.peer.on('connection', function(conn) {//受信側
 				app.connect = conn;
+				app.connectToPeerId = conn.peer;
 				// 接続できたら場合のUI表示
 				app.uiState.showConnectForm = false;
 				app.uiState.connected = true;
@@ -122,6 +133,7 @@
 				});
 				conn.on('close', function() {
 					app.uiState.showConnectForm = true;
+					app.uiState.connected = false;
 				});
 			});
 
@@ -147,6 +159,7 @@
 				this.connectToPeerId = '';
 			},
 			sendMessageToPeer: function(){
+				if (this.sendMessage.length == 0) { alert('empty message !!'); return;}
 				this.sendMessageList.push({body: this.sendMessage});
 				this.connect.send(this.sendMessage);
 				this.sendMessage = '';

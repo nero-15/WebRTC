@@ -28,14 +28,16 @@ func main() {
 		}
 	})
 
-	// peerjs の DataConnection を使用してチャットを行う
+	// peerjs の DataConnection を使用してチャットをする
 	http.HandleFunc("/chat_for_peerjs", func(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "chat.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}
 	})
-	http.HandleFunc("/call", func(w http.ResponseWriter, r *http.Request) {
+
+	// peerjs の MediaConnection を使用してテレビ電話をする
+	http.HandleFunc("/call_for_peerjs", func(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "call.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)

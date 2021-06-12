@@ -3,30 +3,90 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>WebRTC peerJs MediaConnection</title>
+	<title>call for peerjs</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<style>
+		.bd-placeholder-img {
+			font-size: 1.125rem;
+			text-anchor: middle;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			user-select: none;
+		}
+
+		@media (min-width: 768px) {
+			.bd-placeholder-img-lg {
+				font-size: 3.5rem;
+			}
+		}
+
+		body {
+			padding-top: 5rem;
+		}
+	</style>
+
 	<script src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 </head>
 <body>
-	<div id="app">
-		<h1>peerJs MediaConnection</h1>
-		<div>
-			My peer ID is: {{ myPeerId }}
+	<nav class="navbar navbar-expand-md navbar-dark bg-dark fixed-top">
+		<div class="container-fluid">
+			<a class="navbar-brand" href="#">WebRTC</a>
 		</div>
-		<div v-show="uiState.showConnectForm">
-			<input type="text" v-model="connectToPeerId">
-			<button @click="callPeer">call</button>
-		</div>
-		<button v-show="uiState.showCloseCallButton" @click="closeCall">close</button>
-		<div v-show="uiState.showMyVideo">
-			<h2>my video</h2>
-			<video id="myVideo"></video>
-		</div>
-		<div v-show="uiState.showOtherVideo">
-			<h2>other video</h2>
-			<video id="otherVideo"></video>
-		</div>
-	</div>
+	</nav>
+
+	<main class="container" id="app">
+		<section class="my-2 text-center container">
+			<div class="row py-lg-5">
+				<div class="col-lg-6 col-md-12 mx-auto">
+					<h1 class="fw-light">call for peerjs</h1>
+					<p class="lead">My peer ID is: {{ myPeerId }}</p>
+					<div v-show="uiState.connected" class="row">
+						<p class="lead">connect peer ID is: {{ connectToPeerId }}</p>
+					</div>
+
+					<form v-show="uiState.showConnectForm">
+						<div class="mb-3">
+							<div class="input-group">
+								<div class="input-group-text">connect peer ID is: </div>
+								<input type="text" class="form-control" v-model="connectToPeerId">
+								<button type="button" class="btn btn-primary" @click="callPeer">
+									<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-camera-video" viewBox="0 0 16 16">
+										<path fill-rule="evenodd" d="M0 5a2 2 0 0 1 2-2h7.5a2 2 0 0 1 1.983 1.738l3.11-1.382A1 1 0 0 1 16 4.269v7.462a1 1 0 0 1-1.406.913l-3.111-1.382A2 2 0 0 1 9.5 13H2a2 2 0 0 1-2-2V5zm11.5 5.175l3.5 1.556V4.269l-3.5 1.556v4.35zM2 4a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V5a1 1 0 0 0-1-1H2z"/>
+									</svg>
+								</button>
+							</div>
+						</div>
+					</form>
+					<button v-show="uiState.connected" @click="closeCall" class="btn btn-light">close</button>
+				</div>
+			</div>
+		</section>
+
+		<section class="my-2 text-center fw-light container">
+			<div class="row">
+				<div class="col-md-6">
+					<div v-show="uiState.showMyVideo" class="card">
+						<div class="card-header">
+							my video
+						</div>
+						<video id="myVideo" class="card-img-bottom"></video>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div v-show="uiState.showOtherVideo" class="card">
+						<div class="card-header">
+							other video
+						</div>
+						<video id="otherVideo" class="card-img-bottom"></video>
+					</div>
+				</div>
+			</div>
+		</section>
+	</main>
+
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
 	<script>
 		var app = new Vue({
 			el: '#app',
@@ -35,7 +95,7 @@
 					showConnectForm: true,
 					showMyVideo: false,
 					showOtherVideo: false,
-					showCloseCallButton: false
+					connected: false
 				},
 				myPeerId: '',
 				connectToPeerId: '',
@@ -63,6 +123,9 @@
 				});
 				this.peer.on('call', (call) => {
 					app.otherVideo = document.getElementById("otherVideo");
+					app.connectToPeerId = call.peer;
+					app.call = call;
+
 					navigator.mediaDevices.getUserMedia({
 						video: true,
 						audio: false,
@@ -73,17 +136,18 @@
 							app.otherVideo.play();
 							app.uiState.showOtherVideo = true;
 							app.uiState.showConnectForm = false;
-							app.uiState.showCloseCallButton = true;
+							app.uiState.connected = true;
 						});
 					}).catch(e => {
 						console.log(e)
 					})
 
 					call.on('close', function() {
+						app.connectToPeerId = '';
 						app.otherVideo = null;
 						app.uiState.showOtherVideo = false;
 						app.uiState.showConnectForm = true;
-						app.uiState.showCloseCallButton = false;
+						app.uiState.connected = false;
 					});
 				});
 			},
@@ -96,15 +160,16 @@
 						app.otherVideo.play();
 						app.uiState.showOtherVideo = true;
 						app.uiState.showConnectForm = false;
-						app.uiState.showCloseCallButton = true;
+						app.uiState.connected = true;
 					});
 				},
 				closeCall: function(){
 					this.call.close();
+					this.connectToPeerId = '';
 					this.otherVideo = null;
 					this.uiState.showOtherVideo = false;
 					this.uiState.showConnectForm = true;
-					this.uiState.showCloseCallButton = false;
+					this.uiState.connected = false;
 				},
 			}
 		})

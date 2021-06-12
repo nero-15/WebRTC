@@ -117,6 +117,8 @@
 				});
 				this.peer.on('call', (call) => {
 					app.otherVideo = document.getElementById("otherVideo");
+					app.connectToPeerId = call.peer;
+
 					navigator.mediaDevices.getUserMedia({
 						video: true,
 						audio: false,

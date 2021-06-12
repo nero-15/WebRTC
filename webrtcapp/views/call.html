@@ -64,19 +64,26 @@
 			</div>
 		</section>
 
-
-
-
-
-
-		<div v-show="uiState.showMyVideo">
-			<h2>my video</h2>
-			<video id="myVideo"></video>
-		</div>
-		<div v-show="uiState.showOtherVideo">
-			<h2>other video</h2>
-			<video id="otherVideo"></video>
-		</div>
+		<section class="my-2 text-center fw-light container">
+			<div class="row">
+				<div class="col-md-6">
+					<div v-show="uiState.showMyVideo" class="card">
+						<div class="card-header">
+							my video
+						</div>
+						<video id="myVideo" class="card-img-bottom"></video>
+					</div>
+				</div>
+				<div class="col-md-6">
+					<div v-show="uiState.showOtherVideo" class="card">
+						<div class="card-header">
+							other video
+						</div>
+						<video id="otherVideo" class="card-img-bottom"></video>
+					</div>
+				</div>
+			</div>
+		</section>
 	</main>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>

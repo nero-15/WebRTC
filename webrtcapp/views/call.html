@@ -59,7 +59,7 @@
 							</div>
 						</div>
 					</form>
-					<button v-show="uiState.showCloseCallButton" @click="closeCall">close</button>
+					<button v-show="uiState.connected" @click="closeCall" class="btn btn-light">close</button>
 				</div>
 			</div>
 		</section>
@@ -88,7 +88,6 @@
 					showConnectForm: true,
 					showMyVideo: false,
 					showOtherVideo: false,
-					showCloseCallButton: false,
 					connected: false
 				},
 				myPeerId: '',
@@ -118,6 +117,7 @@
 				this.peer.on('call', (call) => {
 					app.otherVideo = document.getElementById("otherVideo");
 					app.connectToPeerId = call.peer;
+					app.call = call;
 
 					navigator.mediaDevices.getUserMedia({
 						video: true,
@@ -129,7 +129,6 @@
 							app.otherVideo.play();
 							app.uiState.showOtherVideo = true;
 							app.uiState.showConnectForm = false;
-							app.uiState.showCloseCallButton = true;
 							app.uiState.connected = true;
 						});
 					}).catch(e => {
@@ -140,7 +139,6 @@
 						app.otherVideo = null;
 						app.uiState.showOtherVideo = false;
 						app.uiState.showConnectForm = true;
-						app.uiState.showCloseCallButton = false;
 						app.uiState.connected = false;
 					});
 				});
@@ -154,16 +152,15 @@
 						app.otherVideo.play();
 						app.uiState.showOtherVideo = true;
 						app.uiState.showConnectForm = false;
-						app.uiState.showCloseCallButton = true;
 						app.uiState.connected = true;
 					});
 				},
 				closeCall: function(){
+					console.log(this.call);
 					this.call.close();
 					this.otherVideo = null;
 					this.uiState.showOtherVideo = false;
 					this.uiState.showConnectForm = true;
-					this.uiState.showCloseCallButton = false;
 					this.uiState.connected = false;
 				},
 			}

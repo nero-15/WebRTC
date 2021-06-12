@@ -136,6 +136,7 @@
 					})
 
 					call.on('close', function() {
+						app.connectToPeerId = '';
 						app.otherVideo = null;
 						app.uiState.showOtherVideo = false;
 						app.uiState.showConnectForm = true;
@@ -156,8 +157,8 @@
 					});
 				},
 				closeCall: function(){
-					console.log(this.call);
 					this.call.close();
+					this.connectToPeerId = '';
 					this.otherVideo = null;
 					this.uiState.showOtherVideo = false;
 					this.uiState.showConnectForm = true;

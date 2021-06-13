@@ -48,20 +48,26 @@
 							</button>
 						</div>
 					</form>
-
 				</div>
 			</div>
 		</section>
 
-		<div class="messagebox">
-			<label for="message">
-				Enter a message:
-				<input type="text" name="message" id="message" placeholder="Message text" disabled>
-			</label>
-			<button id="sendButton" disabled>
-				Send
-			</button>
-		</div>
+		<section class="my-2 text-center fw-light container">
+			<div class="row">
+				<div class="col-lg-6 col-md-12 mx-auto">
+					<form>
+						<div class="mb-3">
+							<label for="message" class="form-label">Enter a message</label>
+							<input type="text" name="message" id="message" placeholder="Message text" class="form-control" disabled>
+						</div>
+						<button id="sendButton" class="btn btn-primary" type="button" disabled>Send</button>
+					</form>
+				</div>
+			</div>
+			
+		</section>
+
+
 		<div class="messagebox" id="receivebox">
 			<p>Messages received:</p>
 		</div>

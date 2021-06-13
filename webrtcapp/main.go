@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat.html", "views/call_for_peerjs.html"))
+var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat_for_peerjs.html", "views/call_for_peerjs.html"))
 
 func main() {
 
@@ -30,7 +30,7 @@ func main() {
 
 	// peerjs の DataConnection を使用してチャットをする
 	http.HandleFunc("/chat_for_peerjs", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "chat.html", nil)
+		err := templates.ExecuteTemplate(w, "chat_for_peerjs.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

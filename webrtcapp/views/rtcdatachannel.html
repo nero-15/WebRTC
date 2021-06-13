@@ -60,17 +60,25 @@
 							<label for="message" class="form-label">Enter a message</label>
 							<input type="text" name="message" id="message" placeholder="Message text" class="form-control" disabled>
 						</div>
-						<button id="sendButton" class="btn btn-primary" type="button" disabled>Send</button>
+						<div class="mb-3">
+							<button id="sendButton" class="btn btn-primary" type="button" disabled>Send</button>
+						</div>
 					</form>
 				</div>
 			</div>
-			
+
+			<div class="row">
+				<div class="col-lg-6 col-md-12 mx-auto">
+					<div class="card">
+						<div class="card-header">
+							Messages received
+						</div>
+						<ul class="list-group list-group-flush" id="receivebox">
+						</ul>
+					</div>
+				</div>
+			</div>
 		</section>
-
-
-		<div class="messagebox" id="receivebox">
-			<p>Messages received:</p>
-		</div>
 	</main>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
@@ -176,7 +184,8 @@
 	}
 
 	function handleReceiveMessage(event) {
-		var el = document.createElement("p");
+		var el = document.createElement("li");
+		el.classList.add("list-group-item");
 		var txtNode = document.createTextNode(event.data);
 
 		el.appendChild(txtNode);

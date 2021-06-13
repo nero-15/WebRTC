@@ -6,13 +6,13 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/rtcdatachannel.html", "views/chat.html", "views/call.html"))
+var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat.html", "views/call.html"))
 
 func main() {
 
 	// WebRTCで静止画を撮る。以下のチュートリアルを参考に実装。
 	//https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
-	http.HandleFunc("/take_photo_with_WebRTC", func(w http.ResponseWriter, r *http.Request) {
+	http.HandleFunc("/taking_still_photos_with_WebRTC", func(w http.ResponseWriter, r *http.Request) {
 		err := templates.ExecuteTemplate(w, "taking_still_photos_with_webrtc.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -21,8 +21,8 @@ func main() {
 
 	//  WebRTC API の RTCDataChannel を使ったサンプル。以下のチュートリアルを参考に実装。
 	// https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Simple_RTCDataChannel_sample
-	http.HandleFunc("/RTCDataChannel_sample", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "rtcdatachannel.html", nil)
+	http.HandleFunc("/a_simple_rtcdatachannel_sample", func(w http.ResponseWriter, r *http.Request) {
+		err := templates.ExecuteTemplate(w, "a_simple_rtcdatachannel_sample.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

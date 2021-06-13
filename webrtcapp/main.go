@@ -6,9 +6,16 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat_for_peerjs.html", "views/call_for_peerjs.html"))
+var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/index.html", "views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat_for_peerjs.html", "views/call_for_peerjs.html"))
 
 func main() {
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		err := templates.ExecuteTemplate(w, "index.html", nil)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+		}
+	})
 
 	// WebRTCで静止画を撮る。以下のチュートリアルを参考に実装。
 	//https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos

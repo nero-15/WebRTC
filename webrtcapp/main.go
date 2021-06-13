@@ -6,14 +6,14 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/camera.html", "views/rtcdatachannel.html", "views/chat.html", "views/call.html"))
+var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/rtcdatachannel.html", "views/chat.html", "views/call.html"))
 
 func main() {
 
 	// WebRTCで静止画を撮る。以下のチュートリアルを参考に実装。
 	//https://developer.mozilla.org/en-US/docs/Web/API/WebRTC_API/Taking_still_photos
 	http.HandleFunc("/take_photo_with_WebRTC", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "camera.html", nil)
+		err := templates.ExecuteTemplate(w, "taking_still_photos_with_webrtc.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

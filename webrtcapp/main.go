@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat.html", "views/call.html"))
+var templates = template.Must(template.New("").Delims("[[", "]]").ParseFiles("views/taking_still_photos_with_webrtc.html", "views/a_simple_rtcdatachannel_sample.html", "views/chat.html", "views/call_for_peerjs.html"))
 
 func main() {
 
@@ -38,7 +38,7 @@ func main() {
 
 	// peerjs の MediaConnection を使用してテレビ電話をする
 	http.HandleFunc("/call_for_peerjs", func(w http.ResponseWriter, r *http.Request) {
-		err := templates.ExecuteTemplate(w, "call.html", nil)
+		err := templates.ExecuteTemplate(w, "call_for_peerjs.html", nil)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 		}

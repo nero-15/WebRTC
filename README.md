@@ -2,6 +2,7 @@
 
 ## 概要
 WebRTC の練習用リポジトリ。[WebRTC API のチュートリアル](https://developer.mozilla.org/ja/docs/Web/API/WebRTC_API)と [peerjs](https://peerjs.com/) を参考にして実装しました。
+開発用にgoでバックエンドの実装をしましたが、ページ公開は github pages を使っています。
 
 ## ページ内容
 
